@@ -10,7 +10,19 @@ namespace parallel
     class Program
     {
 
+        public static void Main(String[] args)
+        {
+            NumArrangement na = new NumArrangement();
 
+            //交互界面
+            Console.WriteLine("Input your Num:");
+            string input = Console.ReadLine();
+            Console.WriteLine("Your Number Arrangement:");
+
+            ArrayList list = na.Arrange(input);
+            na.PrintList(list);
+
+        }
 
 
 
@@ -81,21 +93,8 @@ namespace parallel
             }
         }
 
-        class Test
-        {
-            public static void Main(String[] args)
-            {
-                NumArrangement na = new NumArrangement();
-
-                //交互界面
-                Console.WriteLine("Input your Num:");
-                string input = Console.ReadLine();
-                Console.WriteLine("Your Number Arrangement:");
-
-                ArrayList list = na.Arrange(input);
-                na.PrintList(list);
-
-            }
-        }
+       
+          
+        
     }
 }
