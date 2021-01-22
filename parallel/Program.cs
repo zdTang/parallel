@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.Timers;
 using System.Diagnostics;
+using System.Threading;
 
 namespace parallel
 {
@@ -22,23 +23,13 @@ namespace parallel
             NumArrangement na = new NumArrangement();
             Console.WriteLine("Input your password:");
             string input = Console.ReadLine();
-            /*=====================
-            NumArrangement na = new NumArrangement();
-           
-            //交互界面
-            Console.WriteLine("Input your Num:");
-            
-            Console.WriteLine("Your Number Arrangement:");
 
-            ArrayList list = na.Arrange(input);
-            na.PrintList(list);
-            -------------------------*/
+
             //Char[] alpha = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             string[] alpha = { "A", "B", "C", "D", "E" };
-            //int counter = 0;
-         
 
-        
+
+
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             SetTimer();
@@ -62,7 +53,7 @@ namespace parallel
             Console.WriteLine("time elapsed:{0} Milliseconds", duration);
             aTimer.Dispose();
             Console.WriteLine("compare{0} times", CommonSense.Counter++);
-            
+            Console.ReadLine();
         }
 
 
@@ -71,14 +62,22 @@ namespace parallel
             // Create a timer with a two second interval.
             aTimer = new System.Timers.Timer();
             // Hook up the Elapsed event for the timer. 
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.Interval = 2;
+            aTimer.Elapsed += new System.Timers.ElapsedEventHandler(Execute);//到达时间的时候执行事件；
+            aTimer.Interval = 4;
             aTimer.AutoReset = true;
             aTimer.Enabled = true;
+            //aTimer.SynchronizingObject = Program;
+            
         }
 
-        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        //private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        //{
+        //    Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
+        //        e.SignalTime);
+        //}
+        private static void Execute(object source, System.Timers.ElapsedEventArgs e)
         {
+            aTimer.Stop(); //先关闭定时器
             Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
                 e.SignalTime);
         }
@@ -183,6 +182,11 @@ namespace parallel
             return k == 0 ? new[] { new T[0] } :
                 elements.SelectMany((e, i) =>
                     elements.Skip(i + 1).Combinations(k - 1).Select(c => (new[] { e }).Concat(c)));
+        }
+
+        public static void Display()
+        {
+            Console.WriteLine("timer!!!!!");
         }
     }
 
