@@ -34,7 +34,13 @@ namespace parallel
             stopWatch.Start();
             SetTimer();
             //Get combination collection
-            var result=CommonSense.Combinations(alpha, 3);
+            IEnumerable<IEnumerable<string>> result=CommonSense.Combinations(alpha, 3);
+            //var result = CommonSense.Combinations(alpha, 3);
+
+
+            List<object> SmallGroups = CommonSense.SplitGroup(result, 4);
+
+            /*================================
             //For each combination unit, list permutations
             foreach (var VARIABLE in result)
             {
@@ -45,6 +51,10 @@ namespace parallel
                     break;
                 }
             }
+
+
+
+            ===============================*/
             Console.WriteLine("done");
             aTimer.Stop();
             stopWatch.Stop();
@@ -184,9 +194,52 @@ namespace parallel
                     elements.Skip(i + 1).Combinations(k - 1).Select(c => (new[] { e }).Concat(c)));
         }
 
+        public static IEnumerable<IEnumerable<T>> Combinations_Two<T>(this IEnumerable<T> elements, int k)
+        {
+            return k == 0 ? new[] { new T[0] } :
+                elements.SelectMany((e, i) =>
+                    elements.Skip(i + 1).Combinations(k - 1).Select(c => (new[] { e }).Concat(c)));
+        }
         public static void Display()
         {
             Console.WriteLine("timer!!!!!");
+        }
+
+
+        public static List<object>  SplitGroup(IEnumerable<IEnumerable<string>> result, int num)
+        {
+            int totalItem = result.Count();
+            int numOfGroup = num;
+            int leftOver = totalItem % numOfGroup;
+            int numOfGroupMember = totalItem / numOfGroup;
+            int indexOfResult = 0;
+            //List<IEnumerable<IEnumerable<IEnumerable<string>>>> group = new List<IEnumerable<IEnumerable<IEnumerable<string>>>>();
+            List<object> group = new List<object>();
+
+            for (int i = 0; i < numOfGroup; i++)
+            {
+
+                int round;
+                if (i < numOfGroup - 1)
+                {
+                    round = numOfGroupMember;
+                }
+                else
+                {
+                    round = numOfGroupMember + leftOver;
+                }
+                //List<IEnumerable<IEnumerable<string>>> Split = new List<IEnumerable<IEnumerable<string>>>();
+                List<object> Split = new List<object>();
+                for (int j = 0; j < round; j++)
+                {
+                    Split.Add(result.ElementAt(indexOfResult));
+                    indexOfResult++;
+                }
+
+                group.Add(Split);
+            }
+
+            return group;
         }
     }
 
