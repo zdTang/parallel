@@ -25,8 +25,8 @@ namespace parallel
             string input = Console.ReadLine();
 
 
-            //Char[] alpha = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-            string[] alpha = { "A", "B", "C", "D", "E" };
+            string [] alpha = {"A", "B" , "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+            //string[] alpha = { "A", "B", "C", "D", "E" };
 
 
 
@@ -34,13 +34,11 @@ namespace parallel
             stopWatch.Start();
             SetTimer();
             //Get combination collection
-            IEnumerable<IEnumerable<string>> result=CommonSense.Combinations(alpha, 3);
+            IEnumerable<IEnumerable<string>> result=CommonSense.Combinations(alpha, input.Length);
             //var result = CommonSense.Combinations(alpha, 3);
 
 
-            List<object> SmallGroups = CommonSense.SplitGroup(result, 4);
 
-            /*================================
             //For each combination unit, list permutations
             foreach (var VARIABLE in result)
             {
@@ -54,7 +52,7 @@ namespace parallel
 
 
 
-            ===============================*/
+ 
             Console.WriteLine("done");
             aTimer.Stop();
             stopWatch.Stop();
@@ -162,7 +160,7 @@ namespace parallel
                 Console.WriteLine(newLine);
                 if (newLine == Password)
                 {
-                    Console.WriteLine("match!!!");
+                    Console.WriteLine("=====match!!!============");
                     CommonSense.isMatch = true;
                     return;
                 }
@@ -194,53 +192,14 @@ namespace parallel
                     elements.Skip(i + 1).Combinations(k - 1).Select(c => (new[] { e }).Concat(c)));
         }
 
-        public static IEnumerable<IEnumerable<T>> Combinations_Two<T>(this IEnumerable<T> elements, int k)
-        {
-            return k == 0 ? new[] { new T[0] } :
-                elements.SelectMany((e, i) =>
-                    elements.Skip(i + 1).Combinations(k - 1).Select(c => (new[] { e }).Concat(c)));
-        }
+        
         public static void Display()
         {
             Console.WriteLine("timer!!!!!");
         }
 
 
-        public static List<object>  SplitGroup(IEnumerable<IEnumerable<string>> result, int num)
-        {
-            int totalItem = result.Count();
-            int numOfGroup = num;
-            int leftOver = totalItem % numOfGroup;
-            int numOfGroupMember = totalItem / numOfGroup;
-            int indexOfResult = 0;
-            //List<IEnumerable<IEnumerable<IEnumerable<string>>>> group = new List<IEnumerable<IEnumerable<IEnumerable<string>>>>();
-            List<object> group = new List<object>();
-
-            for (int i = 0; i < numOfGroup; i++)
-            {
-
-                int round;
-                if (i < numOfGroup - 1)
-                {
-                    round = numOfGroupMember;
-                }
-                else
-                {
-                    round = numOfGroupMember + leftOver;
-                }
-                //List<IEnumerable<IEnumerable<string>>> Split = new List<IEnumerable<IEnumerable<string>>>();
-                List<object> Split = new List<object>();
-                for (int j = 0; j < round; j++)
-                {
-                    Split.Add(result.ElementAt(indexOfResult));
-                    indexOfResult++;
-                }
-
-                group.Add(Split);
-            }
-
-            return group;
-        }
+        
     }
 
 }
