@@ -44,8 +44,13 @@ namespace parallel
             {
                 ArrayList list = na.Arrange(VARIABLE);
                 na.PrintList(list,input);
-                if (CommonSense.isMatch == true)
+                if (CommonSense.isMatch)
                 {
+                    break;
+                }
+                else if (CommonSense.isTimeOut)
+                {
+                    Console.WriteLine("=========Time out!========");
                     break;
                 }
             }
@@ -71,7 +76,7 @@ namespace parallel
             aTimer = new System.Timers.Timer();
             // Hook up the Elapsed event for the timer. 
             aTimer.Elapsed += new System.Timers.ElapsedEventHandler(Execute);//到达时间的时候执行事件；
-            aTimer.Interval = 4;
+            aTimer.Interval = 5000;
             aTimer.AutoReset = true;
             aTimer.Enabled = true;
             //aTimer.SynchronizingObject = Program;
@@ -85,9 +90,12 @@ namespace parallel
         //}
         private static void Execute(object source, System.Timers.ElapsedEventArgs e)
         {
-            aTimer.Stop(); //先关闭定时器
+            //aTimer.Stop(); //先关闭定时器
+            CommonSense.isTimeOut = true;
+            Console.WriteLine("=============================================");
             Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
                 e.SignalTime);
+            Console.WriteLine("=============================================");
         }
 
     }
@@ -176,6 +184,7 @@ namespace parallel
     {
 
         public static bool isMatch = false;   // used as global key to indicate if progrom should stop
+        public static bool isTimeOut = false;   // used as global key to indicate if progrom should stop
         public static int Counter { set; get; } = 0;
         /// <summary>
         /// 
